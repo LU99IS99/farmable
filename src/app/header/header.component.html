@@ -1,13 +1,28 @@
 <div>
-    <!-- Mobile Sidebar Overlay -->
+    <!-- Topbar -->
+    <div class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6">
+        <button (click)="toggleSidebar()" class="-m-2.5 p-2.5 text-gray-700">
+            <span class="sr-only">Open sidebar</span>
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
+        <div class="flex-1 text-sm font-semibold text-gray-900">Farmable</div>
+        <a href="#">
+            <img class="w-8 h-8 rounded-full"
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                alt="">
+        </a>
+    </div>
+
+    <!-- Sidebar Overlay -->
     <div [ngClass]="{'opacity-100 visible': isSidebarOpen, 'opacity-0 invisible': !isSidebarOpen}"
         class="fixed inset-0 bg-gray-900/80 z-50 transition-opacity ease-linear duration-300" (click)="toggleSidebar()">
     </div>
 
-
-    <!-- Mobile Sidebar -->
+    <!-- Sidebar -->
     <div [ngClass]="{'-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen}"
-        class="fixed inset-0 z-50 flex transition-transform ease-in-out duration-300 transform lg:hidden">
+        class="fixed inset-0 z-50 flex transition-transform ease-in-out duration-300 transform">
         <div class="relative flex w-full max-w-xs flex-1 bg-white shadow-lg">
             <!-- Close Button -->
             <div class="absolute top-0 left-full flex w-16 justify-center pt-5">
@@ -20,11 +35,10 @@
                 </button>
             </div>
 
-            <!-- Sidebar Menu -->
+            <!-- Sidebar Content -->
             <div class="flex flex-col w-full px-6 pb-2 overflow-y-auto bg-white">
                 <div class="flex h-16 items-center">
-                    <img class="h-auto w-40" src="https://i.ibb.co/Hfc0nWZz/logo.png"
-                        alt="Your Company">
+                    <img class="h-auto w-40" src="https://i.ibb.co/Hfc0nWZz/logo.png" alt="Farmable logo">
                 </div>
                 <nav class="flex flex-1 flex-col">
                     <ul class="flex flex-1 flex-col gap-y-7">
@@ -59,7 +73,7 @@
                         <li>
                             <a href="#"
                                 class="flex items-center gap-x-3 p-2 text-sm font-semibold rounded-md text-gray-700 hover:bg-gray-50 hover:text-lime-600">
-                            <i class="fa-light fa-list"></i>
+                                <i class="fa-light fa-list"></i>
                                 Customer
                             </a>
                         </li>
@@ -74,65 +88,5 @@
                 </nav>
             </div>
         </div>
-    </div>
-
-    <!-- Desktop Sidebar -->
-    <div class="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col border-r border-gray-200 bg-white px-6">
-        <div class="flex h-16 items-center">
-            <img class="h-32 w-auto" src="https://i.ibb.co/Hfc0nWZz/logo.png"
-                alt="Farmable logo">
-        </div>
-        <nav class="flex flex-1 flex-col">
-            <ul class="flex flex-1 flex-col gap-y-7 pl-4">
-                <li>
-                    <a href="#" class="flex items-center gap-x-3 p-2 text-sm font-semibold rounded-md  text-gray-700 hover:bg-gray-50 hover:text-lime-600 cursor-pointer">
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a (click)="navigateToAddInventory()" [class.text-lime-600]="isActive('/add-inventory')"
-                     class="flex items-center gap-x-3 p-2 text-sm font-semibold rounded-md  text-gray-700 hover:bg-gray-50 hover:text-lime-600 cursor-pointer">
-                         Inventory
-                    </a>
-                </li>
-                <li>
-                    <a (click)="navigateToProduct()" [class.text-lime-600]="isActive('/product')" 
-                    class="flex items-center gap-x-3 p-2 text-sm font-semibold rounded-md  text-gray-700 hover:bg-gray-50 hover:text-lime-600 cursor-pointer">
-                       Product
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center gap-x-3 p-2 text-sm font-semibold rounded-md  text-gray-700 hover:bg-gray-50 hover:text-lime-600 cursor-pointer">
-                       Order
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center gap-x-3 p-2 text-sm font-semibold rounded-md  text-gray-700 hover:bg-gray-50 hover:text-lime-600 cursor-pointer">
-                       Customer
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center gap-x-3 p-2 text-sm font-semibold rounded-md  text-gray-700 hover:bg-gray-50 hover:text-lime-600 cursor-pointer">
-                    Setting
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-
-    <!-- Mobile Topbar -->
-    <div class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
-        <button (click)="toggleSidebar()" class="-m-2.5 p-2.5 text-gray-700 lg:hidden">
-            <span class="sr-only">Open sidebar</span>
-            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-        </button>
-        <div class="flex-1 text-sm font-semibold text-gray-900">Farmable</div>
-        <a href="#">
-            <img class="w-8 h-8 rounded-full"
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                alt="">
-        </a>
     </div>
 </div>
