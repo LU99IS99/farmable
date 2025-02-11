@@ -17,57 +17,65 @@ export class ProductService {
   });
 
   constructor(private http: HttpClient) {
-    console.log('ProductService initialized with URL:', this.apiUrl);
-    this.testConnection();
+    console.log(`ProductService initialized with URL: ${this.apiUrl}`);
+    this.testApiConnection();
   }
 
-  private testConnection() {
+  testApiConnection(): Observable<any> {
     console.log('Testing API connection...');
-    this.http.get(this.apiUrl).subscribe({
-      next: (response) => console.log('API Test Success:', response),
-      error: (error) => console.error('API Test Error:', error)
-    });
-  }
-
-  // POST new product
-  addProduct(product: Product): Observable<any> {
-    return this.http.post<any>(this.apiUrl, product).pipe(
-      tap(response => console.log('Product added:', response)),
-      catchError(error => {
-        console.error('Error adding product:', error);
-        return throwError(() => error);
-      })
-    );
-  }
-
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl, { headers: this.headers }).pipe(
-      tap(products => console.log('Products loaded:', products.length)),
+    return this.http.get(this.apiUrl).pipe(
       catchError(this.handleError)
     );
   }
 
-  private sanitizeProduct(product: Product): Product {
-    return {
-      ...product,
-      description: product.description || null,
-      productImage: product.productImage || null,
-      shelfLife: product.unlimitedShelfLife ? null : product.shelfLife,
-      shelfLifeUnit: product.unlimitedShelfLife ? null : product.shelfLifeUnit,
-    };
+  // GET all products
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.apiUrl).pipe(
+      tap((response: Product[]) => console.log('Products fetched:', response)),
+      catchError(this.handleError)
+    );
   }
 
-  private handleError(error: HttpErrorResponse) {
-    const message = error.error?.message || 'An error occurred';
-    console.error('API Error:', error);
-    return throwError(() => new Error(message));
+  // POST new product
+  addProduct(product: Product): Observable<any> {
+    console.log('Adding product:', product);
+    return this.http.post<any>(this.apiUrl, product, { headers: this.headers }).pipe(
+      tap((response: any) => console.log('Product added:', response)),
+      catchError(this.handleError)
+    );
   }
 
-  deleteProduct(id: number): Observable<ProductResponse> {
-    return this.http.delete<ProductResponse>(`${this.apiUrl}/${id}`);
+  // POST new product with FormData
+  addProductWithFormData(formData: FormData): Observable<any> {
+    console.log('Adding product with FormData');
+    return this.http.post<any>(this.apiUrl, formData).pipe(
+      tap((response: any) => console.log('Product added with FormData:', response)),
+      catchError(this.handleError)
+    );
   }
 
-  updateProduct(id: number, product: Product): Observable<ProductResponse> {
-    return this.http.put<ProductResponse>(`${this.apiUrl}/${id}`, this.sanitizeProduct(product));
+  // DELETE a product
+  deleteProduct(id: number): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log(`Deleting product with id: ${id}`);
+    return this.http.delete<any>(url, { headers: this.headers }).pipe(
+      tap((response: any) => console.log('Product deleted:', response)),
+      catchError(this.handleError)
+    );
+  }
+
+  // PUT update a product
+  updateProduct(id: number, product: Product): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log(`Updating product with id: ${id}`);
+    return this.http.put<any>(url, product, { headers: this.headers }).pipe(
+      tap((response: any) => console.log('Product updated:', response)),
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('An error occurred:', error);
+    return throwError('Something bad happened; please try again later.');
   }
 }

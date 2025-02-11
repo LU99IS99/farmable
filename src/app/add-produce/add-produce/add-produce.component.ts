@@ -30,11 +30,18 @@ export class AddProduceComponent {
 
   loading = false;
   errorMessage: string | null = null;
+  imageFile: File | null = null;
 
   constructor(
     private productService: ProductService,
     private router: Router
   ) { }
+
+  onFileChange(event: any): void {
+    if (event.target.files.length > 0) {
+      this.imageFile = event.target.files[0];
+    }
+  }
 
   submitForm(): void {
     console.log('Submit button clicked');
@@ -48,7 +55,13 @@ export class AddProduceComponent {
     this.loading = true;
     this.errorMessage = null;
 
-    this.productService.addProduct(this.formData).subscribe({
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(this.formData));
+    if (this.imageFile) {
+      formData.append('image', this.imageFile);
+    }
+
+    this.productService.addProductWithFormData(formData).subscribe({
       next: (response) => {
         console.log('Success response:', response);
         this.handleSuccess();
@@ -85,5 +98,4 @@ export class AddProduceComponent {
     this.loading = false;
     this.errorMessage = 'Failed to add product. Please try again.';
   }
-
 }

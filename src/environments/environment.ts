@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    apiUrl: 'https://farmable-backend.xchen83.workers.dev/api'
-};
+    apiUrl: 'https://farmablebackendtest.xchen83.workers.devv/api'
+  };
