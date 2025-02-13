@@ -1,47 +1,79 @@
-<form (ngSubmit)="submitForm()" class="w-full max-w-md mx-auto bg-white px-4 py-6 flex flex-col gap-6">
+<form (ngSubmit)="submitForm()" #addProduceForm="ngForm"
+    class="w-full max-w-md mx-auto bg-white px-4 py-6 flex flex-col gap-6">
 
     <!-- Header -->
     <div class="w-full border-b border-gray-200 pb-3">
-        <h2 class="text-xl font-bold text-center">Add Produce</h2>
+        <h2 class="text-xl font-bold text-center">Add Product</h2>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        {{ errorMessage }}
     </div>
 
     <!-- Product Name -->
     <div class="flex flex-col gap-2">
-        <label for="product-name" class="text-sm font-medium text-gray-900">Product Name</label>
-        <input type="text" id="product-name" [(ngModel)]="formData.productName" name="productName"
-            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 focus:ring-2 focus:ring-indigo-600 focus:outline-none">
+        <label for="productName" class="text-sm font-medium text-gray-900">Product Name *</label>
+        <input type="text" id="productName" name="productName" [(ngModel)]="formData.productName" required
+            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-green-600 focus:outline-none"
+            placeholder="Enter product name">
     </div>
 
     <!-- Category -->
     <div class="flex flex-col gap-2">
-        <label for="category" class="text-sm font-medium text-gray-900">Category</label>
-        <select id="category" [(ngModel)]="formData.category" name="category"
-            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 focus:ring-2 focus:ring-indigo-600 focus:outline-none">
-            <option disabled selected>Select category</option>
-            <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        <label for="category" class="text-sm font-medium text-gray-900">Category *</label>
+        <select id="category" name="category" [(ngModel)]="formData.category" required
+            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 focus:ring-2 focus:ring-green-600 focus:outline-none">
+            <option value="">Select a category</option>
+            <option value="Fruits">Fruits</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Dairy">Dairy</option>
         </select>
-    </div>
-
-    <!-- Shelf Life -->
-    <div class="flex flex-col gap-2">
-        <label for="shelf-life" class="text-sm font-medium text-gray-900">Shelf Life</label>
-        <input type="number" id="shelf-life" [(ngModel)]="formData.shelfLife" name="shelfLife"
-            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 focus:ring-2 focus:ring-indigo-600 focus:outline-none">
     </div>
 
     <!-- Pack Unit -->
     <div class="flex flex-col gap-2">
-        <label for="pack-unit" class="text-sm font-medium text-gray-900">Pack Unit</label>
-        <input type="text" id="pack-unit" [(ngModel)]="formData.packUnit" name="packUnit"
-            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 focus:ring-2 focus:ring-indigo-600 focus:outline-none">
+        <label for="packUnit" class="text-sm font-medium text-gray-900">Pack Unit *</label>
+        <input type="text" id="packUnit" name="packUnit" [(ngModel)]="formData.packUnit" required
+            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-green-600 focus:outline-none"
+            placeholder="e.g., kg, lbs, pieces">
     </div>
 
-    <!-- Product Image -->
+    <!-- Shelf Life -->
     <div class="flex flex-col gap-2">
-        <label for="product-image" class="text-sm font-medium text-gray-900">Product Image</label>
-        <input type="file" id="product-image" (change)="onFileChange($event)"
-            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 focus:ring-2 focus:ring-indigo-600 focus:outline-none">
+        <div class="flex items-center gap-2 mb-2">
+            <input type="checkbox" id="unlimitedShelfLife" name="unlimitedShelfLife"
+                [(ngModel)]="formData.unlimitedShelfLife" class="rounded text-green-600 focus:ring-green-500">
+            <label for="unlimitedShelfLife" class="text-sm font-medium text-gray-900">Unlimited Shelf Life</label>
+        </div>
+
+        <div *ngIf="!formData.unlimitedShelfLife" class="flex gap-4">
+            <div class="flex-1">
+                <label for="shelfLife" class="text-sm font-medium text-gray-900">Shelf Life</label>
+                <input type="number" id="shelfLife" name="shelfLife" [(ngModel)]="formData.shelfLife" min="1"
+                    class="w-full p-3 bg-gray-100 rounded-md text-gray-800 focus:ring-2 focus:ring-green-600 focus:outline-none">
+            </div>
+            <div class="flex-1">
+                <label for="shelfLifeUnit" class="text-sm font-medium text-gray-900">Unit</label>
+                <select id="shelfLifeUnit" name="shelfLifeUnit" [(ngModel)]="formData.shelfLifeUnit"
+                    class="w-full p-3 bg-gray-100 rounded-md text-gray-800 focus:ring-2 focus:ring-green-600 focus:outline-none">
+                    <option value="Days">Days</option>
+                    <option value="Weeks">Weeks</option>
+                    <option value="Months">Months</option>
+                </select>
+            </div>
+        </div>
     </div>
+
+    <!-- Description -->
+    <div class="flex flex-col gap-2">
+        <label for="description" class="text-sm font-medium text-gray-900">Description</label>
+        <textarea id="description" name="description" [(ngModel)]="formData.description" rows="3"
+            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-green-600 focus:outline-none"
+            placeholder="Enter product description"></textarea>
+    </div>
+
+    <!-- Previous form fields remain the same -->
 
     <!-- Product Image URL -->
     <div class="flex flex-col gap-2">
