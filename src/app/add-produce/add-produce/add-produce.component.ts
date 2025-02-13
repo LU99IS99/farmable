@@ -93,9 +93,9 @@ export class AddProduceComponent {
     });
   }
 
-  private handleError(error: Error): void {
+  private handleError(error: any): void {
     console.error('Error adding product:', error);
     this.loading = false;
-    this.errorMessage = 'Failed to add product. Please try again.';
+    this.errorMessage = `Failed to add product. Please try again. Error: ${error.message || error.statusText || 'Unknown error'}`;
   }
 }
