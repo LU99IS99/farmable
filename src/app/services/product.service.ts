@@ -11,6 +11,11 @@ import { environment } from '../../environments/environment';
 export class ProductService {
   private apiUrl = `${environment.apiUrl}/products`;
 
+  private headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  });
+
   constructor(private http: HttpClient) {
     console.log(`ProductService initialized with URL: ${this.apiUrl}`);
     this.testApiConnection();
@@ -31,10 +36,23 @@ export class ProductService {
     );
   }
 
+  // POST new product
+  addProduct(product: Product): Observable<any> {
+    console.log('Adding product:', product);
+    return this.http.post<any>(this.apiUrl, product, { headers: this.headers }).pipe(
+      tap((response: any) => console.log('Product added:', response)),
+      catchError(this.handleError)
+    );
+  }
+
   // POST new product with FormData
   addProductWithFormData(formData: FormData): Observable<any> {
     console.log('Adding product with FormData');
-    return this.http.post<any>(this.apiUrl, formData).pipe(
+    return this.http.post<any>(this.apiUrl, formData, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    }).pipe(
       tap((response: any) => console.log('Product added with FormData:', response)),
       catchError(this.handleError)
     );
@@ -44,7 +62,7 @@ export class ProductService {
   deleteProduct(id: number): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     console.log(`Deleting product with id: ${id}`);
-    return this.http.delete<any>(url).pipe(
+    return this.http.delete<any>(url, { headers: this.headers }).pipe(
       tap((response: any) => console.log('Product deleted:', response)),
       catchError(this.handleError)
     );
@@ -54,7 +72,7 @@ export class ProductService {
   updateProduct(id: number, product: Product): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     console.log(`Updating product with id: ${id}`);
-    return this.http.put<any>(url, product).pipe(
+    return this.http.put<any>(url, product, { headers: this.headers }).pipe(
       tap((response: any) => console.log('Product updated:', response)),
       catchError(this.handleError)
     );

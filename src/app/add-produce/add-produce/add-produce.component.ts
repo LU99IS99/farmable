@@ -58,7 +58,7 @@ export class AddProduceComponent {
     const formData = new FormData();
     formData.append('data', JSON.stringify(this.formData));
     if (this.imageFile) {
-      formData.append('productImage', this.imageFile);
+      formData.append('image', this.imageFile);
     }
 
     // 打印FormData内容
@@ -67,11 +67,11 @@ export class AddProduceComponent {
     });
 
     this.productService.addProductWithFormData(formData).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         console.log('Success response:', response);
         this.handleSuccess();
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error in component:', error);
         this.handleError(error);
       }
