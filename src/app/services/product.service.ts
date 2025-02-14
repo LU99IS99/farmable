@@ -40,6 +40,26 @@ export class ProductService {
     );
   }
 
+  // DELETE a product
+  deleteProduct(id: number): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log(`Deleting product with id: ${id}`);
+    return this.http.delete<any>(url).pipe(
+      tap((response: any) => console.log('Product deleted:', response)),
+      catchError(this.handleError)
+    );
+  }
+
+  // PUT update a product
+  updateProduct(id: number, product: Product): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log(`Updating product with id: ${id}`);
+    return this.http.put<any>(url, product).pipe(
+      tap((response: any) => console.log('Product updated:', response)),
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.error('An error occurred:', error);
     return throwError('Something bad happened; please try again later.');
