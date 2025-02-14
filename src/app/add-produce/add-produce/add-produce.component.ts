@@ -58,7 +58,7 @@ export class AddProduceComponent {
     const formData = new FormData();
     formData.append('data', JSON.stringify(this.formData));
     if (this.imageFile) {
-      formData.append('image', this.imageFile);
+      formData.append('productImage', this.imageFile);
     }
 
     // 打印FormData内容
