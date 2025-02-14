@@ -25,9 +25,7 @@
         <select id="category" name="category" [(ngModel)]="formData.category" required
             class="w-full p-3 bg-gray-100 rounded-md text-gray-800 focus:ring-2 focus:ring-green-600 focus:outline-none">
             <option value="">Select a category</option>
-            <option value="Fruits">Fruits</option>
-            <option value="Vegetables">Vegetables</option>
-            <option value="Dairy">Dairy</option>
+            <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
         </select>
     </div>
 
@@ -73,15 +71,12 @@
             placeholder="Enter product description"></textarea>
     </div>
 
-    <!-- Previous form fields remain the same -->
-
-    <!-- Product Image URL -->
+    <!-- Product Image -->
     <div class="flex flex-col gap-2">
-        <label for="productImage" class="text-sm font-medium text-gray-900">Product Image URL</label>
-        <input type="text" id="productImage" name="productImage" [(ngModel)]="formData.productImage"
-            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-green-600 focus:outline-none"
-            placeholder="Enter image URL (optional)">
-        <p class="text-sm text-gray-500">Enter a valid image URL (e.g., https://example.com/image.jpg)</p>
+        <label for="productImage" class="text-sm font-medium text-gray-900">Product Image</label>
+        <input type="file" id="productImage" name="productImage" (change)="onFileChange($event)"
+            class="w-full p-3 bg-gray-100 rounded-md text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-green-600 focus:outline-none">
+        <p class="text-sm text-gray-500">Upload a valid image file (e.g., .jpg, .png)</p>
     </div>
 
     <!-- Submit Button -->
